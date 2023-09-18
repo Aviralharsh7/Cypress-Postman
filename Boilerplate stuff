@@ -1,0 +1,107 @@
+1. 
+context() - groups related test cases together 
+example: context( "GET /users", function (){  });
+- here context is function, which is named "GET /users". 
+- from its name we can say - all test grouped here are related to making GET requests at /users location. 
+
+2. 
+it () - a function which is used to define individual test cases WITHIN a context or test suite   
+- Each it block contains the test code for a single test case, including the actions to be taken and assertions to be made.
+
+3. cy.request("GET", apiUsers).then((response) => { ... });
+- cy.request is a command which sends GET http request to apiUsers which is variable containing the URL Of API endpoint we will test. 
+- .then contains code which handles the response from the  request 
+
+4. expect(response.status).to.eq(200);
+- we check that response of GET method is equal to 200. 
+
+5. expect(response.body.results).length.to.be.greaterThan(1); 
+- here we check the "body" of response to have a property named "results" and see its length >1
+
+
+Example test case - 
+// workflow button 
+
+describe ("workflow button api", function(){
+
+    context("GET /base-template", function(){
+      it("check for correct base-template ", function(){
+        cy.request({method:'GET', url: 'https://easysource-dev.hirequotient.com/api/base-template/get', body: {
+          "x-webAuthorization": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXZpcmFsIFlhZGF2IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lIdHZNWkYwQXZmRk1EdWFFS05LSHl3VnhyRlBlNU9wLUNQbkgwTE9QSjVjRT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9ocS1zb3VyY2luZy1zdGFnIiwiYXVkIjoiaHEtc291cmNpbmctc3RhZyIsImF1dGhfdGltZSI6MTY5NTAzMjgxMCwidXNlcl9pZCI6IkdEQXM1QnNqbk1YVndKUVpvSkNqekFDc1lwaTIiLCJzdWIiOiJHREFzNUJzam5NWFZ3SlFab0pDanpBQ3NZcGkyIiwiaWF0IjoxNjk1MDQyMjU1LCJleHAiOjE2OTUwNDU4NTUsImVtYWlsIjoiaWF2aXJhbDY2NjY2NkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMzQwMTIzOTU1ODk0MDc3Mzk3NCJdLCJlbWFpbCI6WyJpYXZpcmFsNjY2NjY2QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.cB4vUokVlCy9_iVmdqfSb7j0TR7OeG4J7Oi2LLbLhks4FJ5jccPx-psvJf_-y16FF37LshpOx7XKUS8vW78HgM0LfCilFbTpPFkI6-4ZybbdrI3zDUeDEQxKhnyHpEgvNIWJ3UMs1mdHgizQBAW_SnFXRqoBSB_zd0ue62F1RdVimIVWSQBEK5s5eUWBPH490YBbNQG0ZsmyrmGEhB_LTJRtfO2cxbENq4zAhwtw6H_js23N2qE0GzPCuvUdkb4D0_u1__8j8Nx5rYQqLTiAUukwCAlknmtcgKYDG9PYVWw-s0XtaEYFHtnU1u-AXIpBEvvgECLGZMaZUUNi-3QH6w"
+          }}).then((response) =>{
+          expect(response.status).to.eq(200);
+          expect(response.body.data).to.have.property("projectId").to.eq(5544);
+          expect(response.body.data).to.have.property("userId").to.eq(1248);
+          expect(response.body.data).to.have.property("orgId").to.eq(969);
+        })
+      })
+    })
+
+    context("GET /final-template", function(){
+      it("check for correct final-template ", function(){
+        cy.request({method:'GET', url: 'https://easysource-dev.hirequotient.com/api/template/get', body: {
+          "x-webAuthorization": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXZpcmFsIFlhZGF2IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lIdHZNWkYwQXZmRk1EdWFFS05LSHl3VnhyRlBlNU9wLUNQbkgwTE9QSjVjRT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9ocS1zb3VyY2luZy1zdGFnIiwiYXVkIjoiaHEtc291cmNpbmctc3RhZyIsImF1dGhfdGltZSI6MTY5NTAzMjgxMCwidXNlcl9pZCI6IkdEQXM1QnNqbk1YVndKUVpvSkNqekFDc1lwaTIiLCJzdWIiOiJHREFzNUJzam5NWFZ3SlFab0pDanpBQ3NZcGkyIiwiaWF0IjoxNjk1MDQyMjU1LCJleHAiOjE2OTUwNDU4NTUsImVtYWlsIjoiaWF2aXJhbDY2NjY2NkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMzQwMTIzOTU1ODk0MDc3Mzk3NCJdLCJlbWFpbCI6WyJpYXZpcmFsNjY2NjY2QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.cB4vUokVlCy9_iVmdqfSb7j0TR7OeG4J7Oi2LLbLhks4FJ5jccPx-psvJf_-y16FF37LshpOx7XKUS8vW78HgM0LfCilFbTpPFkI6-4ZybbdrI3zDUeDEQxKhnyHpEgvNIWJ3UMs1mdHgizQBAW_SnFXRqoBSB_zd0ue62F1RdVimIVWSQBEK5s5eUWBPH490YBbNQG0ZsmyrmGEhB_LTJRtfO2cxbENq4zAhwtw6H_js23N2qE0GzPCuvUdkb4D0_u1__8j8Nx5rYQqLTiAUukwCAlknmtcgKYDG9PYVWw-s0XtaEYFHtnU1u-AXIpBEvvgECLGZMaZUUNi-3QH6w"
+          }}).then((response) =>{
+          const candidateCount = response.body.data;
+          expect(response.status).to.eq(200);
+          expect(candidateCount).to.eq(3)
+        })
+      })
+    })
+
+    context("GET /candidates", function(){
+      it("check for null candidates name", function(){
+        cy.request({method:'GET', url:'https://easysource-dev.hirequotient.com/api/hyper-personalization/candidate-name/get', body: {
+          "x-webAuthorization": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXZpcmFsIFlhZGF2IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lIdHZNWkYwQXZmRk1EdWFFS05LSHl3VnhyRlBlNU9wLUNQbkgwTE9QSjVjRT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9ocS1zb3VyY2luZy1zdGFnIiwiYXVkIjoiaHEtc291cmNpbmctc3RhZyIsImF1dGhfdGltZSI6MTY5NTAzMjgxMCwidXNlcl9pZCI6IkdEQXM1QnNqbk1YVndKUVpvSkNqekFDc1lwaTIiLCJzdWIiOiJHREFzNUJzam5NWFZ3SlFab0pDanpBQ3NZcGkyIiwiaWF0IjoxNjk1MDQyMjU1LCJleHAiOjE2OTUwNDU4NTUsImVtYWlsIjoiaWF2aXJhbDY2NjY2NkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMzQwMTIzOTU1ODk0MDc3Mzk3NCJdLCJlbWFpbCI6WyJpYXZpcmFsNjY2NjY2QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.cB4vUokVlCy9_iVmdqfSb7j0TR7OeG4J7Oi2LLbLhks4FJ5jccPx-psvJf_-y16FF37LshpOx7XKUS8vW78HgM0LfCilFbTpPFkI6-4ZybbdrI3zDUeDEQxKhnyHpEgvNIWJ3UMs1mdHgizQBAW_SnFXRqoBSB_zd0ue62F1RdVimIVWSQBEK5s5eUWBPH490YBbNQG0ZsmyrmGEhB_LTJRtfO2cxbENq4zAhwtw6H_js23N2qE0GzPCuvUdkb4D0_u1__8j8Nx5rYQqLTiAUukwCAlknmtcgKYDG9PYVWw-s0XtaEYFHtnU1u-AXIpBEvvgECLGZMaZUUNi-3QH6w"
+          }}).then((response) =>{
+          expect(response.status).to.eq(200);
+          expect(response.body.candidates).to.have.property("name");
+        })
+      })
+    })
+})
+
+
+it('adds a todo', () => {
+  cy.request({
+    url: '/todos',
+    method: 'POST',
+    body: {
+      title: 'Write REST API',
+    },
+  })
+  .its('body')
+  .should('deep.contain', {
+    title: 'Write REST API',
+    completed: false,
+  })
+})
+
+
+describe("hq api tests", function(){
+
+  let ctx: TestUserCtx = {};
+  before(()=>{
+    cy.request("GET", "/");
+  });
+
+  beforeEach(function(){
+
+    cy.task("db:seed");
+
+    cy.database("filter", "users").then((users: User[]) =>{
+      ctx.authneticatedUser = users[0];
+      ctx.searchUser = users[1];
+      return cy.loginByApi(ctx.authenticatedUser.username);
+    });
+
+
+    context("GET /users", function(){
+      it("gets a list of users", function(){
+        cy.request("GET", apiUsers).then((response) =>{
+          expect(response.status).to.eq(200);
+          expect(response.body.results).length.to.be.greaterThan(1);
+        });
+      });
+    });
+  });
