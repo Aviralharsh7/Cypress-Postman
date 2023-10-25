@@ -1,3 +1,3 @@
 # Cypress-Postman
 
-Picked up cypress for a startup challenge. Here is all progress I made.
+Using Cypress and Postman, I tested API calls of critical points of a live B2B product. 
